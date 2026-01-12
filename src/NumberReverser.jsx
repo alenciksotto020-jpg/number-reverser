@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import * as XLSX from 'xlsx';
 
 export default function NumberReverser() {
@@ -174,189 +174,143 @@ export default function NumberReverser() {
   };
 
   return (
-    <div className="nr-container">
-      {/* Animated background */}
-      <div className="nr-bg">
-        <div className="nr-orb nr-orb-1" />
-        <div className="nr-orb nr-orb-2" />
-        <div className="nr-orb nr-orb-3" />
-        <div className="nr-grid" />
-      </div>
-
-      <div className="nr-wrapper">
-        {/* Header */}
+    <div className="nr">
+      <div className="nr-wrap">
         <header className="nr-header">
-          <div className="nr-logo">
-            <div className="nr-logo-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <div className="nr-brand">
+            <div className="nr-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4" />
               </svg>
             </div>
-            <div className="nr-logo-text">
-              <h1>Number Reverser</h1>
-              <p>Transform Excel data with precision</p>
-            </div>
+            <h1>Number Reverser</h1>
           </div>
           {data && (
-            <button onClick={reset} className="nr-btn nr-btn-ghost">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <button onClick={reset} className="nr-btn nr-btn-text">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                 <path d="M3 3v5h5" />
               </svg>
-              Start Over
+              Reset
             </button>
           )}
         </header>
 
         {!data ? (
-          <div className="nr-input-section">
-            {/* Tabs */}
+          <main className="nr-main">
             <div className="nr-tabs">
-              <button
-                className={`nr-tab ${activeTab === 'upload' ? 'active' : ''}`}
-                onClick={() => setActiveTab('upload')}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                Upload File
+              <button className={`nr-tab ${activeTab === 'upload' ? 'active' : ''}`} onClick={() => setActiveTab('upload')}>
+                Upload
               </button>
-              <button
-                className={`nr-tab ${activeTab === 'paste' ? 'active' : ''}`}
-                onClick={() => setActiveTab('paste')}
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                </svg>
-                Paste Data
+              <button className={`nr-tab ${activeTab === 'paste' ? 'active' : ''}`} onClick={() => setActiveTab('paste')}>
+                Paste
               </button>
             </div>
 
-            {/* Upload Area */}
-            {activeTab === 'upload' && (
+            {activeTab === 'upload' ? (
               <div
-                className={`nr-dropzone ${isDragging ? 'dragging' : ''}`}
+                className={`nr-drop ${isDragging ? 'dragging' : ''}`}
                 onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
                 onDragLeave={() => setIsDragging(false)}
                 onDrop={onDrop}
               >
-                <input type="file" accept=".xlsx,.xls,.csv" onChange={onFile} id="fileInput" />
-                <label htmlFor="fileInput">
-                  <div className="nr-dropzone-icon">
-                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                      <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                      <polyline points="14 2 14 8 20 8" />
-                      <path d="M12 18v-6m-3 3l3-3 3 3" />
-                    </svg>
-                  </div>
-                  <p className="nr-dropzone-text">
-                    <span>Click to upload</span> or drag and drop
-                  </p>
-                  <p className="nr-dropzone-hint">Excel (.xlsx, .xls) or CSV files</p>
+                <input type="file" accept=".xlsx,.xls,.csv" onChange={onFile} id="file" />
+                <label htmlFor="file">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <path d="M12 18v-6m-3 3l3-3 3 3" />
+                  </svg>
+                  <p><strong>Drop file here</strong> or click to browse</p>
+                  <span>.xlsx, .xls, .csv</span>
                 </label>
               </div>
-            )}
-
-            {/* Paste Area */}
-            {activeTab === 'paste' && (
+            ) : (
               <textarea
-                className="nr-textarea"
-                placeholder="Paste your tab-separated data here..."
+                className="nr-paste"
+                placeholder="Paste tab-separated data..."
                 onChange={e => e.target.value.trim() && parse(e.target.value, false)}
               />
             )}
 
-            {/* Info Card */}
-            <div className="nr-card nr-info-card">
-              <h3>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
-                </svg>
-                How it works
-              </h3>
+            <div className="nr-info">
+              <h3>How it works</h3>
               <div className="nr-steps">
                 <div className="nr-step">
-                  <div className="nr-step-num">1</div>
+                  <span>1</span>
                   <div>
-                    <strong>Detect Patterns</strong>
-                    <p>Finds h1/v1 markers and combined patterns</p>
+                    <strong>Detect</strong>
+                    <p>Finds h1/v1 markers</p>
                   </div>
                 </div>
                 <div className="nr-step">
-                  <div className="nr-step-num">2</div>
+                  <span>2</span>
                   <div>
-                    <strong>Split & Process</strong>
-                    <p>Splits combined rows, processes odd sequences</p>
+                    <strong>Split</strong>
+                    <p>Handles combined patterns</p>
                   </div>
                 </div>
                 <div className="nr-step">
-                  <div className="nr-step-num">3</div>
+                  <span>3</span>
                   <div>
-                    <strong>Reverse Numbers</strong>
-                    <p>Creates W2/S2 rows with reversed values</p>
+                    <strong>Reverse</strong>
+                    <p>Creates W2/S2 rows</p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </main>
         ) : (
-          <div className="nr-results">
-            {/* Stats */}
+          <main className="nr-results">
             <div className="nr-stats">
-              {[
-                { label: 'Input', value: stats.input, color: 'blue' },
-                { label: 'Splits', value: stats.splits, color: 'amber' },
-                { label: 'Reversed', value: stats.reversed, color: 'green' },
-                { label: 'Skipped', value: stats.skipped, color: 'red' },
-                { label: 'Output', value: stats.output, color: 'purple' }
-              ].map((stat) => (
-                <div key={stat.label} className={`nr-stat nr-stat-${stat.color}`}>
-                  <div className="nr-stat-value">{stat.value}</div>
-                  <div className="nr-stat-label">{stat.label}</div>
-                </div>
-              ))}
+              <div className="nr-stat">
+                <span className="nr-stat-val">{stats.input}</span>
+                <span className="nr-stat-lbl">Input</span>
+              </div>
+              <div className="nr-stat">
+                <span className="nr-stat-val">{stats.splits}</span>
+                <span className="nr-stat-lbl">Splits</span>
+              </div>
+              <div className="nr-stat">
+                <span className="nr-stat-val">{stats.reversed}</span>
+                <span className="nr-stat-lbl">Reversed</span>
+              </div>
+              <div className="nr-stat">
+                <span className="nr-stat-val">{stats.skipped}</span>
+                <span className="nr-stat-lbl">Skipped</span>
+              </div>
+              <div className="nr-stat">
+                <span className="nr-stat-val">{stats.output}</span>
+                <span className="nr-stat-lbl">Output</span>
+              </div>
             </div>
 
-            {/* Table */}
-            <div className="nr-card nr-table-card">
-              <div className="nr-table-header">
-                <h3>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <line x1="3" y1="9" x2="21" y2="9" />
-                    <line x1="9" y1="21" x2="9" y2="9" />
-                  </svg>
-                  Processed Data
-                </h3>
-                <span className="nr-badge">{data.length} rows</span>
+            <div className="nr-table-wrap">
+              <div className="nr-table-head">
+                <h3>Results</h3>
+                <span>{data.length} rows</span>
               </div>
-              <div className="nr-table-wrap">
+              <div className="nr-table-scroll">
                 <table className="nr-table">
                   <thead>
                     <tr>
-                      <th className="nr-th-num">#</th>
-                      <th className="nr-th-status">Status</th>
-                      {Array.from({ length: maxCols }, (_, i) => (
-                        <th key={i}>{colLetter(i)}</th>
-                      ))}
+                      <th>#</th>
+                      <th>Status</th>
+                      {Array.from({ length: maxCols }, (_, i) => <th key={i}>{colLetter(i)}</th>)}
                     </tr>
                   </thead>
                   <tbody>
                     {data.map((r, ri) => (
-                      <tr key={ri} className={`nr-row nr-row-${r.type} ${r.isNew ? 'nr-row-new' : ''}`}>
-                        <td className="nr-td-num">{ri + 1}</td>
-                        <td className="nr-td-status">
-                          <span className={`nr-status nr-status-${r.type} ${r.isNew ? 'nr-status-new' : ''}`}>
-                            {r.isNew && <span className="nr-sparkle">+</span>}
+                      <tr key={ri} className={`row-${r.type} ${r.isNew ? 'row-new' : ''}`}>
+                        <td className="td-num">{ri + 1}</td>
+                        <td>
+                          <span className={`tag tag-${r.type} ${r.isNew ? 'tag-new' : ''}`}>
+                            {r.isNew && '+ '}
                             {r.type === 'original' ? 'Original' : r.type === 'filled' ? 'Reversed' : 'Unchanged'}
                           </span>
                         </td>
                         {r.data.map((c, ci) => (
-                          <td key={ci} className={typeof c === 'number' && r.type === 'filled' ? 'nr-td-highlight' : ''}>
+                          <td key={ci} className={typeof c === 'number' && r.type === 'filled' ? 'td-hl' : ''}>
                             {c ?? ''}
                           </td>
                         ))}
@@ -367,121 +321,58 @@ export default function NumberReverser() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="nr-actions">
               <button onClick={exportXL} className="nr-btn nr-btn-primary">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                   <polyline points="7 10 12 15 17 10" />
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
                 Download Excel
               </button>
-              <button onClick={copy} className={`nr-btn nr-btn-secondary ${copied ? 'copied' : ''}`}>
+              <button onClick={copy} className={`nr-btn nr-btn-outline ${copied ? 'copied' : ''}`}>
                 {copied ? (
                   <>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                     Copied!
                   </>
                 ) : (
                   <>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                       <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                     </svg>
-                    Copy to Clipboard
+                    Copy
                   </>
                 )}
               </button>
             </div>
-          </div>
+          </main>
         )}
 
         <footer className="nr-footer">
-          <p>Splits combined patterns &bull; Reverses odd sequences &bull; Skips even counts</p>
+          Splits combined patterns, reverses odd sequences, skips even counts
         </footer>
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .nr-container {
+        .nr {
           min-height: 100vh;
-          background: linear-gradient(135deg, #0c0f1a 0%, #1a1f35 50%, #0f1629 100%);
-          font-family: 'Inter', -apple-system, sans-serif;
-          color: #e2e8f0;
-          position: relative;
-          overflow-x: hidden;
+          background: #faf8f5;
+          font-family: 'DM Sans', -apple-system, sans-serif;
+          color: #3d3530;
         }
 
-        .nr-bg {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          overflow: hidden;
-        }
-
-        .nr-orb {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(80px);
-          opacity: 0.6;
-          animation: float 20s ease-in-out infinite;
-        }
-
-        .nr-orb-1 {
-          top: -15%;
-          right: -10%;
-          width: 600px;
-          height: 600px;
-          background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
-        }
-
-        .nr-orb-2 {
-          bottom: -20%;
-          left: -15%;
-          width: 500px;
-          height: 500px;
-          background: radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 70%);
-          animation-delay: -10s;
-          animation-direction: reverse;
-        }
-
-        .nr-orb-3 {
-          top: 40%;
-          left: 30%;
-          width: 400px;
-          height: 400px;
-          background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, transparent 70%);
-          animation-delay: -5s;
-        }
-
-        .nr-grid {
-          position: absolute;
-          inset: 0;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-          background-size: 60px 60px;
-          mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
-        }
-
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0) scale(1); }
-          33% { transform: translate(30px, -30px) scale(1.05); }
-          66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        .nr-wrapper {
-          position: relative;
-          z-index: 1;
-          max-width: 1200px;
+        .nr-wrap {
+          max-width: 1000px;
           margin: 0 auto;
-          padding: 40px 24px;
+          padding: 48px 24px;
           min-height: 100vh;
           display: flex;
           flex-direction: column;
@@ -491,393 +382,313 @@ export default function NumberReverser() {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 48px;
-          flex-wrap: wrap;
-          gap: 20px;
+          margin-bottom: 40px;
         }
 
-        .nr-logo {
+        .nr-brand {
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 12px;
         }
 
-        .nr-logo-icon {
-          width: 56px;
-          height: 56px;
-          background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
-          border-radius: 16px;
+        .nr-icon {
+          width: 44px;
+          height: 44px;
+          background: #c9795a;
+          border-radius: 12px;
           display: flex;
           align-items: center;
           justify-content: center;
           color: white;
-          box-shadow:
-            0 0 0 1px rgba(255,255,255,0.1),
-            0 20px 40px -10px rgba(99, 102, 241, 0.5),
-            0 0 60px -10px rgba(139, 92, 246, 0.3);
-          animation: pulse 3s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-          0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 20px 40px -10px rgba(99, 102, 241, 0.5), 0 0 60px -10px rgba(139, 92, 246, 0.3); }
-          50% { box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 25px 50px -10px rgba(99, 102, 241, 0.6), 0 0 80px -10px rgba(139, 92, 246, 0.4); }
-        }
-
-        .nr-logo-text h1 {
-          font-size: 1.75rem;
-          font-weight: 700;
-          letter-spacing: -0.03em;
-          background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
-        }
-
-        .nr-logo-text p {
-          font-size: 0.9rem;
-          color: #64748b;
-          margin-top: 2px;
+        .nr-brand h1 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #2a2522;
         }
 
         .nr-btn {
           display: inline-flex;
           align-items: center;
-          gap: 10px;
-          padding: 14px 28px;
+          gap: 8px;
+          padding: 12px 20px;
           border: none;
-          border-radius: 12px;
-          font-size: 0.95rem;
-          font-weight: 600;
+          border-radius: 10px;
+          font-size: 0.9rem;
+          font-weight: 500;
           font-family: inherit;
           cursor: pointer;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.2s ease;
         }
 
-        .nr-btn-ghost {
-          background: rgba(255,255,255,0.05);
-          color: #94a3b8;
-          border: 1px solid rgba(255,255,255,0.08);
-          backdrop-filter: blur(10px);
+        .nr-btn-text {
+          background: transparent;
+          color: #8a7f76;
+          padding: 8px 12px;
         }
 
-        .nr-btn-ghost:hover {
-          background: rgba(255,255,255,0.1);
-          color: #e2e8f0;
-          transform: translateY(-2px);
+        .nr-btn-text:hover {
+          color: #3d3530;
+          background: rgba(0,0,0,0.04);
         }
 
         .nr-btn-primary {
-          background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+          background: #c9795a;
           color: white;
-          box-shadow: 0 10px 40px -10px rgba(16, 185, 129, 0.5);
         }
 
         .nr-btn-primary:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 20px 50px -10px rgba(16, 185, 129, 0.6);
+          background: #b56a4c;
         }
 
-        .nr-btn-secondary {
-          background: rgba(99, 102, 241, 0.1);
-          color: #a5b4fc;
-          border: 1px solid rgba(99, 102, 241, 0.3);
+        .nr-btn-outline {
+          background: white;
+          color: #5c524a;
+          border: 1px solid #e0dbd6;
         }
 
-        .nr-btn-secondary:hover {
-          background: rgba(99, 102, 241, 0.2);
-          transform: translateY(-2px);
+        .nr-btn-outline:hover {
+          border-color: #c9795a;
+          color: #c9795a;
         }
 
-        .nr-btn-secondary.copied {
-          background: rgba(16, 185, 129, 0.2);
-          color: #34d399;
-          border-color: rgba(16, 185, 129, 0.3);
+        .nr-btn-outline.copied {
+          background: #e8f5e9;
+          border-color: #81c784;
+          color: #4caf50;
         }
 
-        .nr-input-section {
+        .nr-main {
+          flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 28px;
-          flex: 1;
+          gap: 24px;
         }
 
         .nr-tabs {
           display: flex;
-          gap: 8px;
-          padding: 6px;
-          background: rgba(255,255,255,0.03);
-          border-radius: 14px;
+          gap: 4px;
+          background: #f0ebe6;
+          padding: 4px;
+          border-radius: 10px;
           width: fit-content;
-          border: 1px solid rgba(255,255,255,0.05);
         }
 
         .nr-tab {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 12px 24px;
+          padding: 10px 20px;
           background: transparent;
           border: none;
-          border-radius: 10px;
-          color: #64748b;
-          font-size: 0.95rem;
+          border-radius: 8px;
+          font-size: 0.9rem;
           font-weight: 500;
-          font-family: inherit;
+          color: #8a7f76;
           cursor: pointer;
-          transition: all 0.25s ease;
+          font-family: inherit;
+          transition: all 0.2s ease;
         }
 
         .nr-tab:hover {
-          color: #94a3b8;
+          color: #5c524a;
         }
 
         .nr-tab.active {
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
-          color: #c7d2fe;
-          box-shadow: 0 4px 20px -5px rgba(99, 102, 241, 0.3);
+          background: white;
+          color: #3d3530;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.08);
         }
 
-        .nr-dropzone {
-          position: relative;
-          border: 2px dashed rgba(99, 102, 241, 0.3);
-          border-radius: 24px;
-          padding: 60px 40px;
+        .nr-drop {
+          border: 2px dashed #d9d4ce;
+          border-radius: 16px;
+          padding: 48px;
           text-align: center;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.03) 100%);
-          transition: all 0.3s ease;
-          cursor: pointer;
+          background: white;
+          transition: all 0.2s ease;
+          position: relative;
         }
 
-        .nr-dropzone:hover, .nr-dropzone.dragging {
-          border-color: #6366f1;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.08) 100%);
-          transform: scale(1.01);
-          box-shadow: 0 20px 60px -20px rgba(99, 102, 241, 0.3);
+        .nr-drop:hover, .nr-drop.dragging {
+          border-color: #c9795a;
+          background: #fdfcfb;
         }
 
-        .nr-dropzone input {
+        .nr-drop input {
           position: absolute;
           inset: 0;
           opacity: 0;
           cursor: pointer;
         }
 
-        .nr-dropzone label {
+        .nr-drop label {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 20px;
+          gap: 12px;
           cursor: pointer;
+          color: #8a7f76;
         }
 
-        .nr-dropzone-icon {
-          width: 100px;
-          height: 100px;
-          background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
-          border-radius: 24px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #a5b4fc;
-          border: 1px solid rgba(99, 102, 241, 0.2);
+        .nr-drop svg {
+          color: #c9795a;
         }
 
-        .nr-dropzone-text {
-          font-size: 1.1rem;
-          color: #94a3b8;
+        .nr-drop p {
+          color: #5c524a;
         }
 
-        .nr-dropzone-text span {
-          color: #a5b4fc;
-          font-weight: 600;
-        }
-
-        .nr-dropzone-hint {
+        .nr-drop span {
           font-size: 0.85rem;
-          color: #475569;
+          color: #a9a099;
         }
 
-        .nr-textarea {
+        .nr-paste {
           width: 100%;
-          height: 220px;
-          padding: 24px;
-          background: rgba(15, 23, 42, 0.6);
-          border: 2px solid rgba(99, 102, 241, 0.2);
-          border-radius: 20px;
-          color: #e2e8f0;
-          font-size: 0.95rem;
-          font-family: 'JetBrains Mono', monospace;
+          height: 180px;
+          padding: 20px;
+          background: white;
+          border: 1px solid #e0dbd6;
+          border-radius: 12px;
+          font-size: 0.9rem;
+          font-family: 'DM Mono', monospace;
+          color: #3d3530;
           resize: vertical;
           outline: none;
-          transition: all 0.3s ease;
-          backdrop-filter: blur(10px);
+          transition: border-color 0.2s ease;
         }
 
-        .nr-textarea:focus {
-          border-color: #6366f1;
-          box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        .nr-paste:focus {
+          border-color: #c9795a;
         }
 
-        .nr-textarea::placeholder {
-          color: #475569;
+        .nr-paste::placeholder {
+          color: #b5aea6;
         }
 
-        .nr-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 24px;
-          backdrop-filter: blur(20px);
+        .nr-info {
+          background: white;
+          border: 1px solid #e0dbd6;
+          border-radius: 16px;
+          padding: 24px;
         }
 
-        .nr-info-card {
-          padding: 32px;
-        }
-
-        .nr-info-card h3 {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          font-size: 1.1rem;
+        .nr-info h3 {
+          font-size: 0.9rem;
           font-weight: 600;
-          color: #e2e8f0;
-          margin-bottom: 28px;
+          color: #5c524a;
+          margin-bottom: 20px;
         }
 
         .nr-steps {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-          gap: 24px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+        }
+
+        @media (max-width: 600px) {
+          .nr-steps { grid-template-columns: 1fr; }
         }
 
         .nr-step {
           display: flex;
-          gap: 16px;
-          align-items: flex-start;
+          gap: 12px;
         }
 
-        .nr-step-num {
-          width: 36px;
-          height: 36px;
-          background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-          border-radius: 10px;
+        .nr-step span {
+          width: 28px;
+          height: 28px;
+          background: #f5f0eb;
+          border-radius: 8px;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
-          font-weight: 700;
-          font-size: 0.9rem;
+          font-weight: 600;
+          font-size: 0.85rem;
+          color: #c9795a;
           flex-shrink: 0;
-          box-shadow: 0 8px 20px -8px rgba(99, 102, 241, 0.5);
         }
 
         .nr-step strong {
           display: block;
-          color: #e2e8f0;
-          margin-bottom: 4px;
+          font-weight: 600;
+          color: #3d3530;
+          margin-bottom: 2px;
         }
 
         .nr-step p {
-          color: #64748b;
           font-size: 0.85rem;
-          line-height: 1.5;
+          color: #8a7f76;
         }
 
         .nr-results {
+          flex: 1;
           display: flex;
           flex-direction: column;
-          gap: 28px;
-          flex: 1;
+          gap: 24px;
         }
 
         .nr-stats {
-          display: grid;
-          grid-template-columns: repeat(5, 1fr);
-          gap: 16px;
-        }
-
-        @media (max-width: 768px) {
-          .nr-stats { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        @media (max-width: 480px) {
-          .nr-stats { grid-template-columns: repeat(2, 1fr); }
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
         }
 
         .nr-stat {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 16px;
-          padding: 20px 16px;
+          background: white;
+          border: 1px solid #e0dbd6;
+          border-radius: 12px;
+          padding: 16px 24px;
           text-align: center;
-          transition: all 0.3s ease;
+          min-width: 100px;
+          flex: 1;
         }
 
-        .nr-stat:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 20px 40px -20px rgba(0,0,0,0.3);
+        .nr-stat-val {
+          display: block;
+          font-size: 1.75rem;
+          font-weight: 600;
+          color: #c9795a;
         }
 
-        .nr-stat-value {
-          font-size: 2rem;
-          font-weight: 700;
-          margin-bottom: 4px;
-        }
-
-        .nr-stat-label {
+        .nr-stat-lbl {
           font-size: 0.75rem;
+          color: #8a7f76;
           text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: #64748b;
+          letter-spacing: 0.05em;
         }
 
-        .nr-stat-blue .nr-stat-value { color: #818cf8; }
-        .nr-stat-amber .nr-stat-value { color: #fbbf24; }
-        .nr-stat-green .nr-stat-value { color: #34d399; }
-        .nr-stat-red .nr-stat-value { color: #f87171; }
-        .nr-stat-purple .nr-stat-value { color: #c084fc; }
-
-        .nr-stat-blue { border-color: rgba(99, 102, 241, 0.2); }
-        .nr-stat-amber { border-color: rgba(245, 158, 11, 0.2); }
-        .nr-stat-green { border-color: rgba(16, 185, 129, 0.2); }
-        .nr-stat-red { border-color: rgba(239, 68, 68, 0.2); }
-        .nr-stat-purple { border-color: rgba(168, 85, 247, 0.2); }
-
-        .nr-table-card {
+        .nr-table-wrap {
+          background: white;
+          border: 1px solid #e0dbd6;
+          border-radius: 16px;
           overflow: hidden;
           flex: 1;
-          display: flex;
-          flex-direction: column;
         }
 
-        .nr-table-header {
+        .nr-table-head {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 20px 28px;
-          border-bottom: 1px solid rgba(255,255,255,0.06);
+          padding: 16px 20px;
+          border-bottom: 1px solid #e0dbd6;
         }
 
-        .nr-table-header h3 {
-          display: flex;
-          align-items: center;
-          gap: 12px;
+        .nr-table-head h3 {
           font-size: 1rem;
           font-weight: 600;
         }
 
-        .nr-badge {
-          font-size: 0.8rem;
-          color: #94a3b8;
-          background: rgba(255,255,255,0.05);
-          padding: 6px 14px;
+        .nr-table-head span {
+          font-size: 0.85rem;
+          color: #8a7f76;
+          background: #f5f0eb;
+          padding: 4px 12px;
           border-radius: 20px;
-          border: 1px solid rgba(255,255,255,0.06);
         }
 
-        .nr-table-wrap {
+        .nr-table-scroll {
           overflow: auto;
-          max-height: 450px;
-          flex: 1;
+          max-height: 400px;
         }
 
         .nr-table {
@@ -887,114 +698,98 @@ export default function NumberReverser() {
         }
 
         .nr-table th {
-          padding: 14px 12px;
-          background: rgba(99, 102, 241, 0.08);
-          color: #a5b4fc;
+          padding: 12px;
+          background: #faf8f5;
           font-weight: 600;
+          color: #5c524a;
           text-align: center;
           position: sticky;
           top: 0;
           z-index: 10;
-          min-width: 60px;
-          border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+          border-bottom: 1px solid #e0dbd6;
         }
-
-        .nr-th-num { min-width: 50px; }
-        .nr-th-status { min-width: 100px; }
 
         .nr-table td {
-          padding: 12px;
+          padding: 10px 12px;
           text-align: center;
-          border-bottom: 1px solid rgba(255,255,255,0.04);
-          font-family: 'JetBrains Mono', monospace;
-          color: #cbd5e1;
+          border-bottom: 1px solid #f0ebe6;
+          font-family: 'DM Mono', monospace;
+          color: #5c524a;
         }
 
-        .nr-td-num {
-          color: #475569;
+        .td-num {
+          color: #b5aea6;
           font-weight: 500;
         }
 
-        .nr-td-highlight {
-          color: #34d399 !important;
+        .td-hl {
+          color: #c9795a !important;
           font-weight: 600;
         }
 
-        .nr-row-original { background: rgba(99, 102, 241, 0.04); }
-        .nr-row-filled { background: rgba(16, 185, 129, 0.04); }
-        .nr-row-new { background: rgba(245, 158, 11, 0.06); }
+        .row-original { background: #fdfcfb; }
+        .row-filled { background: #faf8f5; }
+        .row-new { background: #fef9f6; }
 
-        .nr-status {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          padding: 5px 12px;
+        .tag {
+          display: inline-block;
+          padding: 4px 10px;
           border-radius: 6px;
           font-size: 0.75rem;
           font-weight: 500;
-          font-family: 'Inter', sans-serif;
+          font-family: 'DM Sans', sans-serif;
         }
 
-        .nr-status-original {
-          background: rgba(99, 102, 241, 0.15);
-          color: #a5b4fc;
-          border: 1px solid rgba(99, 102, 241, 0.25);
+        .tag-original {
+          background: #f5f0eb;
+          color: #8a7f76;
         }
 
-        .nr-status-filled {
-          background: rgba(16, 185, 129, 0.15);
-          color: #34d399;
-          border: 1px solid rgba(16, 185, 129, 0.25);
+        .tag-filled {
+          background: #fef3ed;
+          color: #c9795a;
         }
 
-        .nr-status-unchanged {
-          background: rgba(100, 116, 139, 0.15);
-          color: #94a3b8;
-          border: 1px solid rgba(100, 116, 139, 0.25);
+        .tag-unchanged {
+          background: #f0ebe6;
+          color: #a9a099;
         }
 
-        .nr-status-new {
-          background: rgba(245, 158, 11, 0.15) !important;
-          color: #fbbf24 !important;
-          border: 1px solid rgba(245, 158, 11, 0.25) !important;
-        }
-
-        .nr-sparkle {
-          font-weight: 700;
+        .tag-new {
+          background: #fff4e5;
+          color: #e07c24;
         }
 
         .nr-actions {
           display: flex;
-          gap: 16px;
+          gap: 12px;
           justify-content: center;
-          flex-wrap: wrap;
         }
 
         .nr-footer {
           text-align: center;
-          padding: 40px 0 20px;
-          color: #475569;
+          padding: 32px 0 0;
+          color: #a9a099;
           font-size: 0.85rem;
           margin-top: auto;
         }
 
-        /* Scrollbar */
         ::-webkit-scrollbar {
           width: 8px;
           height: 8px;
         }
 
         ::-webkit-scrollbar-track {
-          background: rgba(255,255,255,0.02);
+          background: #f5f0eb;
         }
 
         ::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.1);
+          background: #d9d4ce;
           border-radius: 4px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-          background: rgba(255,255,255,0.15);
+          background: #c9c3bc;
         }
       `}</style>
     </div>
