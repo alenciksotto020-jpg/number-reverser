@@ -263,23 +263,23 @@ export default function NumberReverser() {
         ) : (
           <main className="nr-results">
             <div className="nr-stats">
-              <div className="nr-stat">
+              <div className="nr-stat nr-stat-input">
                 <span className="nr-stat-val">{stats.input}</span>
                 <span className="nr-stat-lbl">Input</span>
               </div>
-              <div className="nr-stat">
+              <div className="nr-stat nr-stat-splits">
                 <span className="nr-stat-val">{stats.splits}</span>
                 <span className="nr-stat-lbl">Splits</span>
               </div>
-              <div className="nr-stat">
+              <div className="nr-stat nr-stat-reversed">
                 <span className="nr-stat-val">{stats.reversed}</span>
                 <span className="nr-stat-lbl">Reversed</span>
               </div>
-              <div className="nr-stat">
+              <div className="nr-stat nr-stat-skipped">
                 <span className="nr-stat-val">{stats.skipped}</span>
                 <span className="nr-stat-lbl">Skipped</span>
               </div>
-              <div className="nr-stat">
+              <div className="nr-stat nr-stat-output">
                 <span className="nr-stat-val">{stats.output}</span>
                 <span className="nr-stat-lbl">Output</span>
               </div>
@@ -358,13 +358,13 @@ export default function NumberReverser() {
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         .nr {
           min-height: 100vh;
-          background: #faf8f5;
+          background: linear-gradient(180deg, #f7f3ed 0%, #efe8df 100%);
           font-family: 'DM Sans', -apple-system, sans-serif;
           color: #3d3530;
         }
@@ -388,35 +388,37 @@ export default function NumberReverser() {
         .nr-brand {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 14px;
         }
 
         .nr-icon {
-          width: 44px;
-          height: 44px;
-          background: #c9795a;
-          border-radius: 12px;
+          width: 48px;
+          height: 48px;
+          background: linear-gradient(135deg, #e85d04 0%, #f48c06 50%, #faa307 100%);
+          border-radius: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
           color: white;
+          box-shadow: 0 8px 24px -8px rgba(232, 93, 4, 0.5);
         }
 
         .nr-brand h1 {
-          font-size: 1.5rem;
-          font-weight: 600;
+          font-size: 1.6rem;
+          font-weight: 700;
           color: #2a2522;
+          letter-spacing: -0.02em;
         }
 
         .nr-btn {
           display: inline-flex;
           align-items: center;
           gap: 8px;
-          padding: 12px 20px;
+          padding: 12px 22px;
           border: none;
           border-radius: 10px;
           font-size: 0.9rem;
-          font-weight: 500;
+          font-weight: 600;
           font-family: inherit;
           cursor: pointer;
           transition: all 0.2s ease;
@@ -425,38 +427,41 @@ export default function NumberReverser() {
         .nr-btn-text {
           background: transparent;
           color: #8a7f76;
-          padding: 8px 12px;
+          padding: 8px 14px;
         }
 
         .nr-btn-text:hover {
           color: #3d3530;
-          background: rgba(0,0,0,0.04);
+          background: rgba(0,0,0,0.05);
         }
 
         .nr-btn-primary {
-          background: #c9795a;
+          background: linear-gradient(135deg, #e85d04 0%, #f48c06 100%);
           color: white;
+          box-shadow: 0 6px 20px -6px rgba(232, 93, 4, 0.5);
         }
 
         .nr-btn-primary:hover {
-          background: #b56a4c;
+          transform: translateY(-2px);
+          box-shadow: 0 10px 28px -6px rgba(232, 93, 4, 0.6);
         }
 
         .nr-btn-outline {
           background: white;
           color: #5c524a;
-          border: 1px solid #e0dbd6;
+          border: 2px solid #e0dbd6;
         }
 
         .nr-btn-outline:hover {
-          border-color: #c9795a;
-          color: #c9795a;
+          border-color: #f48c06;
+          color: #e85d04;
+          background: #fffbf7;
         }
 
         .nr-btn-outline.copied {
-          background: #e8f5e9;
-          border-color: #81c784;
-          color: #4caf50;
+          background: #ecfdf5;
+          border-color: #34d399;
+          color: #059669;
         }
 
         .nr-main {
@@ -469,19 +474,19 @@ export default function NumberReverser() {
         .nr-tabs {
           display: flex;
           gap: 4px;
-          background: #f0ebe6;
-          padding: 4px;
-          border-radius: 10px;
+          background: rgba(0,0,0,0.04);
+          padding: 5px;
+          border-radius: 12px;
           width: fit-content;
         }
 
         .nr-tab {
-          padding: 10px 20px;
+          padding: 11px 22px;
           background: transparent;
           border: none;
-          border-radius: 8px;
+          border-radius: 9px;
           font-size: 0.9rem;
-          font-weight: 500;
+          font-weight: 600;
           color: #8a7f76;
           cursor: pointer;
           font-family: inherit;
@@ -494,23 +499,25 @@ export default function NumberReverser() {
 
         .nr-tab.active {
           background: white;
-          color: #3d3530;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+          color: #e85d04;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
 
         .nr-drop {
-          border: 2px dashed #d9d4ce;
-          border-radius: 16px;
-          padding: 48px;
+          border: 2px dashed #d4ccc3;
+          border-radius: 20px;
+          padding: 56px 40px;
           text-align: center;
           background: white;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
           position: relative;
+          box-shadow: 0 4px 20px -10px rgba(0,0,0,0.08);
         }
 
         .nr-drop:hover, .nr-drop.dragging {
-          border-color: #c9795a;
-          background: #fdfcfb;
+          border-color: #f48c06;
+          background: linear-gradient(180deg, #fffdfb 0%, #fff8f2 100%);
+          box-shadow: 0 8px 32px -10px rgba(244, 140, 6, 0.2);
         }
 
         .nr-drop input {
@@ -524,17 +531,18 @@ export default function NumberReverser() {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 12px;
+          gap: 14px;
           cursor: pointer;
           color: #8a7f76;
         }
 
         .nr-drop svg {
-          color: #c9795a;
+          color: #f48c06;
         }
 
         .nr-drop p {
           color: #5c524a;
+          font-size: 1.05rem;
         }
 
         .nr-drop span {
@@ -547,18 +555,20 @@ export default function NumberReverser() {
           height: 180px;
           padding: 20px;
           background: white;
-          border: 1px solid #e0dbd6;
-          border-radius: 12px;
+          border: 2px solid #e0dbd6;
+          border-radius: 16px;
           font-size: 0.9rem;
           font-family: 'DM Mono', monospace;
           color: #3d3530;
           resize: vertical;
           outline: none;
-          transition: border-color 0.2s ease;
+          transition: all 0.2s ease;
+          box-shadow: 0 4px 20px -10px rgba(0,0,0,0.08);
         }
 
         .nr-paste:focus {
-          border-color: #c9795a;
+          border-color: #f48c06;
+          box-shadow: 0 4px 20px -10px rgba(244, 140, 6, 0.25);
         }
 
         .nr-paste::placeholder {
@@ -567,16 +577,17 @@ export default function NumberReverser() {
 
         .nr-info {
           background: white;
-          border: 1px solid #e0dbd6;
-          border-radius: 16px;
-          padding: 24px;
+          border: 1px solid #e8e2db;
+          border-radius: 20px;
+          padding: 28px;
+          box-shadow: 0 4px 20px -10px rgba(0,0,0,0.08);
         }
 
         .nr-info h3 {
-          font-size: 0.9rem;
-          font-weight: 600;
+          font-size: 0.95rem;
+          font-weight: 700;
           color: #5c524a;
-          margin-bottom: 20px;
+          margin-bottom: 22px;
         }
 
         .nr-steps {
@@ -591,28 +602,32 @@ export default function NumberReverser() {
 
         .nr-step {
           display: flex;
-          gap: 12px;
+          gap: 14px;
+          padding: 16px;
+          background: linear-gradient(135deg, #faf7f4 0%, #f5f0eb 100%);
+          border-radius: 14px;
         }
 
         .nr-step span {
-          width: 28px;
-          height: 28px;
-          background: #f5f0eb;
-          border-radius: 8px;
+          width: 32px;
+          height: 32px;
+          background: linear-gradient(135deg, #e85d04 0%, #f48c06 100%);
+          border-radius: 10px;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-weight: 600;
+          font-weight: 700;
           font-size: 0.85rem;
-          color: #c9795a;
+          color: white;
           flex-shrink: 0;
+          box-shadow: 0 4px 12px -4px rgba(232, 93, 4, 0.4);
         }
 
         .nr-step strong {
           display: block;
           font-weight: 600;
           color: #3d3530;
-          margin-bottom: 2px;
+          margin-bottom: 3px;
         }
 
         .nr-step p {
@@ -629,66 +644,115 @@ export default function NumberReverser() {
 
         .nr-stats {
           display: flex;
-          gap: 12px;
+          gap: 14px;
           flex-wrap: wrap;
         }
 
         .nr-stat {
           background: white;
-          border: 1px solid #e0dbd6;
-          border-radius: 12px;
-          padding: 16px 24px;
+          border-radius: 16px;
+          padding: 18px 24px;
           text-align: center;
-          min-width: 100px;
+          min-width: 110px;
           flex: 1;
+          box-shadow: 0 4px 16px -8px rgba(0,0,0,0.1);
+          border: 2px solid transparent;
+          transition: all 0.2s ease;
+        }
+
+        .nr-stat:hover {
+          transform: translateY(-2px);
         }
 
         .nr-stat-val {
           display: block;
-          font-size: 1.75rem;
-          font-weight: 600;
-          color: #c9795a;
+          font-size: 2rem;
+          font-weight: 700;
         }
 
         .nr-stat-lbl {
           font-size: 0.75rem;
-          color: #8a7f76;
           text-transform: uppercase;
-          letter-spacing: 0.05em;
+          letter-spacing: 0.06em;
+          font-weight: 600;
         }
+
+        /* Input - Slate blue */
+        .nr-stat-input {
+          border-color: #cbd5e1;
+          background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        }
+        .nr-stat-input .nr-stat-val { color: #475569; }
+        .nr-stat-input .nr-stat-lbl { color: #64748b; }
+
+        /* Splits - Amber/Orange */
+        .nr-stat-splits {
+          border-color: #fed7aa;
+          background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+        .nr-stat-splits .nr-stat-val { color: #d97706; }
+        .nr-stat-splits .nr-stat-lbl { color: #b45309; }
+
+        /* Reversed - Emerald green */
+        .nr-stat-reversed {
+          border-color: #a7f3d0;
+          background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+        .nr-stat-reversed .nr-stat-val { color: #059669; }
+        .nr-stat-reversed .nr-stat-lbl { color: #047857; }
+
+        /* Skipped - Rose/Red */
+        .nr-stat-skipped {
+          border-color: #fecaca;
+          background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+        .nr-stat-skipped .nr-stat-val { color: #dc2626; }
+        .nr-stat-skipped .nr-stat-lbl { color: #b91c1c; }
+
+        /* Output - Violet/Purple */
+        .nr-stat-output {
+          border-color: #ddd6fe;
+          background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+        }
+        .nr-stat-output .nr-stat-val { color: #7c3aed; }
+        .nr-stat-output .nr-stat-lbl { color: #6d28d9; }
 
         .nr-table-wrap {
           background: white;
-          border: 1px solid #e0dbd6;
-          border-radius: 16px;
+          border: 1px solid #e8e2db;
+          border-radius: 20px;
           overflow: hidden;
           flex: 1;
+          box-shadow: 0 4px 20px -10px rgba(0,0,0,0.1);
         }
 
         .nr-table-head {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 16px 20px;
-          border-bottom: 1px solid #e0dbd6;
+          padding: 18px 24px;
+          border-bottom: 1px solid #e8e2db;
+          background: linear-gradient(180deg, #faf8f5 0%, #f5f2ed 100%);
         }
 
         .nr-table-head h3 {
-          font-size: 1rem;
-          font-weight: 600;
+          font-size: 1.05rem;
+          font-weight: 700;
+          color: #3d3530;
         }
 
         .nr-table-head span {
           font-size: 0.85rem;
-          color: #8a7f76;
-          background: #f5f0eb;
-          padding: 4px 12px;
+          color: white;
+          background: linear-gradient(135deg, #e85d04 0%, #f48c06 100%);
+          padding: 5px 14px;
           border-radius: 20px;
+          font-weight: 600;
         }
 
         .nr-table-scroll {
           overflow: auto;
-          max-height: 400px;
+          max-height: 420px;
         }
 
         .nr-table {
@@ -698,19 +762,19 @@ export default function NumberReverser() {
         }
 
         .nr-table th {
-          padding: 12px;
+          padding: 14px 12px;
           background: #faf8f5;
-          font-weight: 600;
+          font-weight: 700;
           color: #5c524a;
           text-align: center;
           position: sticky;
           top: 0;
           z-index: 10;
-          border-bottom: 1px solid #e0dbd6;
+          border-bottom: 2px solid #e8e2db;
         }
 
         .nr-table td {
-          padding: 10px 12px;
+          padding: 12px;
           text-align: center;
           border-bottom: 1px solid #f0ebe6;
           font-family: 'DM Mono', monospace;
@@ -723,60 +787,61 @@ export default function NumberReverser() {
         }
 
         .td-hl {
-          color: #c9795a !important;
+          color: #059669 !important;
           font-weight: 600;
+          background: rgba(16, 185, 129, 0.06);
         }
 
         .row-original { background: #fdfcfb; }
-        .row-filled { background: #faf8f5; }
-        .row-new { background: #fef9f6; }
+        .row-filled { background: #fafdf9; }
+        .row-new { background: #fffcf5; }
 
         .tag {
           display: inline-block;
-          padding: 4px 10px;
-          border-radius: 6px;
+          padding: 5px 12px;
+          border-radius: 8px;
           font-size: 0.75rem;
-          font-weight: 500;
+          font-weight: 600;
           font-family: 'DM Sans', sans-serif;
         }
 
         .tag-original {
+          background: #f1f5f9;
+          color: #475569;
+        }
+
+        .tag-filled {
+          background: #ecfdf5;
+          color: #059669;
+        }
+
+        .tag-unchanged {
           background: #f5f0eb;
           color: #8a7f76;
         }
 
-        .tag-filled {
-          background: #fef3ed;
-          color: #c9795a;
-        }
-
-        .tag-unchanged {
-          background: #f0ebe6;
-          color: #a9a099;
-        }
-
         .tag-new {
-          background: #fff4e5;
-          color: #e07c24;
+          background: #fef3c7;
+          color: #d97706;
         }
 
         .nr-actions {
           display: flex;
-          gap: 12px;
+          gap: 14px;
           justify-content: center;
         }
 
         .nr-footer {
           text-align: center;
-          padding: 32px 0 0;
+          padding: 36px 0 0;
           color: #a9a099;
           font-size: 0.85rem;
           margin-top: auto;
         }
 
         ::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
+          width: 10px;
+          height: 10px;
         }
 
         ::-webkit-scrollbar-track {
@@ -784,12 +849,13 @@ export default function NumberReverser() {
         }
 
         ::-webkit-scrollbar-thumb {
-          background: #d9d4ce;
-          border-radius: 4px;
+          background: #d4ccc3;
+          border-radius: 5px;
+          border: 2px solid #f5f0eb;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-          background: #c9c3bc;
+          background: #c9c0b5;
         }
       `}</style>
     </div>
