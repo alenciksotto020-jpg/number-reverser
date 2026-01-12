@@ -22,10 +22,11 @@ export default function NumberReverser() {
   const test = (cell, p) => typeof cell === 'string' && p.test(cell.trim());
   const findIdx = (row, p) => row.findIndex(c => test(c, p));
   const extractNum = (cell) => {
-    if (typeof cell === 'number') return Math.floor(cell);
+    const format = (n) => n % 1 === 0 ? Math.floor(n) : n;
+    if (typeof cell === 'number') return format(cell);
     if (typeof cell === 'string') {
       const m = cell.trim().match(P.num);
-      return m ? Math.floor(parseFloat(m[1])) : null;
+      return m ? format(parseFloat(m[1])) : null;
     }
     return null;
   };
