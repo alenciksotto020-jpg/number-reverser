@@ -23,7 +23,7 @@ export default function NumberReverser() {
   const extractNum = (cell) => {
     if (typeof cell === 'number') return Math.floor(cell);
     if (typeof cell === 'string') {
-      const m = cell.match(P.num);
+      const m = cell.trim().match(P.num);
       return m ? Math.floor(parseFloat(m[1])) : null;
     }
     return null;
@@ -74,6 +74,7 @@ export default function NumberReverser() {
         if (nums1.length % 2 === 1 && nums2.length > 0 && nums2.length % 2 === 1) {
           splits++;
           const r1 = [...row];
+          r1[combIdx] = extractNum(row[combIdx]); // Change "53.0 + v 1" to just 53
           for (let j = combIdx + 1; j < r1.length; j++) r1[j] = '';
           result.push({ data: r1, type: 'original' });
 
