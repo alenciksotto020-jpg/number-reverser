@@ -30,6 +30,7 @@ export default function NumberReverser() {
     return null;
   };
   const getMarkerLetter = (cell) => cell?.trim().match(/^([hv])/i)?.[1].toLowerCase();
+  const getCombinedLetter = (cell) => cell?.trim().match(/\+\s*([hv])\s*1$/i)?.[1].toLowerCase();
   const altMarker = (l) => l === 'h' ? 'v' : 'h';
   const getM2 = (l) => l === 'h' ? 'W' : 'S';
 
@@ -85,9 +86,9 @@ export default function NumberReverser() {
             reversed++;
           }
 
-          const newLetter = altMarker(letter);
-          result.push({ data: buildRow(row.length, `${newLetter} 1`, m1Idx, impIdx, 'Imposts:', nums2), type: 'original', isNew: true });
-          result.push({ data: buildRow(row.length, `${getM2(newLetter)}2`, m1Idx, impIdx, ':', [...nums2].reverse()), type: 'filled', isNew: true });
+          const combLetter = getCombinedLetter(row[combIdx]);
+          result.push({ data: buildRow(row.length, `${combLetter} 1`, m1Idx, impIdx, 'Imposts:', nums2), type: 'original', isNew: true });
+          result.push({ data: buildRow(row.length, `${getM2(combLetter)}2`, m1Idx, impIdx, ':', [...nums2].reverse()), type: 'filled', isNew: true });
           reversed++;
         } else {
           if (hasNext) i++;
