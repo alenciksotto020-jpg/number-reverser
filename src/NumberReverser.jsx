@@ -21,6 +21,13 @@ export default function NumberReverser() {
   // Helpers
   const test = (cell, p) => typeof cell === 'string' && p.test(cell.trim());
   const findIdx = (row, p) => row.findIndex(c => test(c, p));
+  const findAllIdx = (row, p) => {
+    const indices = [];
+    for (let i = 0; i < row.length; i++) {
+      if (test(row[i], p)) indices.push(i);
+    }
+    return indices;
+  };
   const extractNum = (cell) => {
     const format = (n) => n % 1 === 0 ? Math.floor(n) : n;
     if (typeof cell === 'number') return format(cell);
@@ -35,9 +42,10 @@ export default function NumberReverser() {
   const altMarker = (l) => l === 'h' ? 'v' : 'h';
   const getM2 = (l) => l === 'h' ? 'W' : 'S';
 
-  const getNums = (row, start, end = row.length) => {
+  const getNums = (row, start, end = row.length, excludeCombined = false) => {
     const nums = [];
     for (let i = start + 1; i < end && i < row.length; i++) {
+      if (excludeCombined && test(row[i], P.combined)) continue;
       const n = extractNum(row[i]);
       if (n !== null) nums.push(n);
     }
@@ -80,26 +88,57 @@ export default function NumberReverser() {
       const hasNext = i + 1 < input.length && findIdx(input[i + 1], P.m2) !== -1;
 
       if (combIdx !== -1) {
-        const nums1 = [...getNums(row, m1Idx, combIdx), extractNum(row[combIdx])];
-        const nums2 = getNums(row, combIdx);
+        // Handle multiple combined patterns
+        const combIndices = findAllIdx(row, P.combined);
+        let allValid = true;
+        let currentStart = m1Idx;
+        let currentLetter = letter;
+        const segments = [];
 
-        if (nums1.length % 2 === 1 && nums2.length > 0 && nums2.length % 2 === 1) {
-          splits++;
+        // Extract all segments
+        for (let j = 0; j < combIndices.length; j++) {
+          const idx = combIndices[j];
+          const nums = [...getNums(row, currentStart, idx, true), extractNum(row[idx])];
+          if (nums.length % 2 === 1) {
+            segments.push({ nums, letter: currentLetter });
+          } else {
+            allValid = false;
+            break;
+          }
+          currentStart = idx;
+          currentLetter = getCombinedLetter(row[idx]);
+        }
+
+        // Check final segment
+        const finalNums = getNums(row, combIndices[combIndices.length - 1], row.length, true);
+        if (finalNums.length > 0 && finalNums.length % 2 === 1) {
+          const finalLetter = getCombinedLetter(row[combIndices[combIndices.length - 1]]);
+          segments.push({ nums: finalNums, letter: finalLetter });
+        }
+
+        if (allValid && segments.length > 0) {
+          splits += segments.length - 1;
+
+          // Process first segment
+          const firstSeg = segments[0];
           const r1 = [...row];
-          r1[combIdx] = extractNum(row[combIdx]);
-          for (let j = combIdx + 1; j < r1.length; j++) r1[j] = '';
+          r1[combIndices[0]] = extractNum(row[combIndices[0]]);
+          for (let j = combIndices[0] + 1; j < r1.length; j++) r1[j] = '';
           result.push({ data: r1, type: 'original' });
 
           if (hasNext) {
-            const r2 = buildRow(input[++i].length, `${getM2(letter)}2`, m1Idx, impIdx, ':', [...nums1].reverse());
+            const r2 = buildRow(input[++i].length, `${getM2(firstSeg.letter)}2`, m1Idx, impIdx, ':', [...firstSeg.nums].reverse());
             result.push({ data: r2, type: 'filled' });
             reversed++;
           }
 
-          const combLetter = getCombinedLetter(row[combIdx]);
-          result.push({ data: buildRow(row.length, `${combLetter} 1`, m1Idx, impIdx, 'Imposts:', nums2), type: 'original', isNew: true });
-          result.push({ data: buildRow(row.length, `${getM2(combLetter)}2`, m1Idx, impIdx, ':', [...nums2].reverse()), type: 'filled', isNew: true });
-          reversed++;
+          // Process remaining segments
+          for (let j = 1; j < segments.length; j++) {
+            const seg = segments[j];
+            result.push({ data: buildRow(row.length, `${seg.letter} 1`, m1Idx, impIdx, 'Imposts:', seg.nums), type: 'original', isNew: true });
+            result.push({ data: buildRow(row.length, `${getM2(seg.letter)}2`, m1Idx, impIdx, ':', [...seg.nums].reverse()), type: 'filled', isNew: true });
+            reversed++;
+          }
         } else {
           if (hasNext) i++;
           skipped++;
