@@ -44,6 +44,15 @@ export default function NumberReverser() {
     return nums;
   };
 
+  const isCompletelyEmptyRow = (row) => {
+    return row.every(cell =>
+      cell === '' ||
+      cell === null ||
+      cell === undefined ||
+      (typeof cell === 'string' && cell.trim() === '')
+    );
+  };
+
   const buildRow = (len, marker, markerIdx, impostsIdx, impostsVal, nums) => {
     const row = Array(Math.max(len, markerIdx + 1 + nums.length)).fill('');
     if (impostsIdx !== -1) row[impostsIdx] = impostsVal;
@@ -111,8 +120,11 @@ export default function NumberReverser() {
       }
     }
 
-    setData(result);
-    setStats({ input: input.length, output: result.length, reversed, skipped, splits });
+    // Remove completely empty rows (where ALL cells are blank)
+    const cleanedResult = result.filter(r => !isCompletelyEmptyRow(r.data));
+
+    setData(cleanedResult);
+    setStats({ input: input.length, output: cleanedResult.length, reversed, skipped, splits });
   };
 
   const parse = (d, isFile) => process(isFile ? d : d.trim().split('\n').map(l => l.split(/\t/).map(c => {
